@@ -3,7 +3,7 @@ import { check, sleep } from 'k6';
 
 // 1. Função para autenticar no Keycloak e obter o Token
 function getAuthToken() {
-  const url = 'http://localhost/auth/realms/squad-arquitetura/protocol/openid-connect/token';
+  const url = 'https://chilly-onions-open.loca.lt/auth/realms/squad-arquitetura/protocol/openid-connect/token';
   const payload = {
     grant_type: 'password',
     client_id: 'meu-crud',
