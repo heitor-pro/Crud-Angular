@@ -34,7 +34,7 @@ export default function () {
     },
   };
 
-  const url = __ENV.TARGET_URL || 'http://localhost/mock/produtos';
+  const url = __ENV.TARGET_URL || 'https://chilly-onions-open.loca.lt/mock/produtos';
   const res = http.get(url, params);
 
   check(res, {

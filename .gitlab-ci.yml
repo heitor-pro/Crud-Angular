@@ -1,13 +1,10 @@
 stages:
   - test
-  - load-test
 
 k6_load_test:
-  stage: load-test
+  stage: test
   image:
     name: grafana/k6:latest
-    entrypoint: ['']
+    entrypoint: [""]
   script:
-    - echo "Iniciando teste de carga para a rota /produtos..."
     - k6 run load-test.js
-  allow_failure: true
