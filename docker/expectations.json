@@ -1,0 +1,66 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/produtos"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"],
+        "Access-Control-Allow-Origin": ["*"],
+        "Access-Control-Allow-Headers": ["*"],
+        "Access-Control-Allow-Methods": ["GET, POST, PUT, DELETE, OPTIONS"]
+      },
+      "body": "[{\"id\": 1, \"nome\": \"Teclado\", \"preco\": 200}, {\"id\": 2, \"nome\": \"Mouse\", \"preco\": 100}]"
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/api/produtos"
+    },
+    "httpResponse": {
+      "statusCode": 201,
+      "headers": {
+        "Content-Type": ["application/json"],
+        "Access-Control-Allow-Origin": ["*"],
+        "Access-Control-Allow-Headers": ["*"],
+        "Access-Control-Allow-Methods": ["GET, POST, PUT, DELETE, OPTIONS"]
+      },
+      "body": "{\"id\": 3, \"mensagem\": \"Criado com sucesso!\"}"
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "PUT",
+      "path": "/api/produtos/.*"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"],
+        "Access-Control-Allow-Origin": ["*"],
+        "Access-Control-Allow-Headers": ["*"],
+        "Access-Control-Allow-Methods": ["GET, POST, PUT, DELETE, OPTIONS"]
+      },
+      "body": "{\"mensagem\": \"Atualizado com sucesso!\"}"
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "DELETE",
+      "path": "/api/produtos/."
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"],
+        "Access-Control-Allow-Origin": ["*"],
+        "Access-Control-Allow-Headers": ["*"],
+        "Access-Control-Allow-Methods": ["GET, POST, PUT, DELETE, OPTIONS"]
+      },
+      "body": "{\"mensagem\": \"Removido com sucesso!\"}"
+    }
+  }
+]
