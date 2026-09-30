@@ -1,7 +1,8 @@
 import 'zone.js';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { WCModule } from './app/wc.module'; // Importa o módulo do Web Component
 
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
+platformBrowserDynamic().bootstrapModule(WCModule, {
+  ngZoneEventCoalescing: true,
+})
+.catch((err) => console.error(err));

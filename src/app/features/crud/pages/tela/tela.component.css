@@ -1,0 +1,767 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&display=swap");
+
+/* =========================================================
+   Tokens
+   (declarados em :root, :host e .app-container para funcionar
+   tanto em styles.css global quanto em CSS de componente)
+   ========================================================= */
+:root,
+:host,
+.app-container {
+  color-scheme: light;
+
+  --page: #e8ebf0;
+  --surface: #ffffff;
+  --surface-2: #f5f7fa;
+  --line: #d8dde6;
+  --line-strong: #c3cad6;
+
+  --ink: #111c33;
+  --muted: #5b677d;
+  --faint: #8b96aa;
+
+  --navy: #0f1e3d;
+  --navy-2: #1a2d54;
+
+  --accent: #2557d6;
+  --accent-strong: #1a43b0;
+  --accent-tint: #e8eeff;
+  --row-hover: #f3f6ff;
+
+  --money: #0e7a3b;
+  --money-strong: #0a5f2d;
+
+  --amber: #e0a100;
+  --amber-tint: #fff4d6;
+  --amber-line: #f0d48a;
+  --amber-ink: #7a4b00;
+
+  --danger: #d92d3a;
+  --danger-strong: #b81f2c;
+
+  --r-lg: 16px;
+  --r-md: 14px;
+  --r-sm: 10px;
+  --r-xs: 8px;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ring: 0 0 0 4px rgba(37, 87, 214, 0.16);
+
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Bricolage Grotesque", "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+:host {
+  margin: 0;
+  background-color: var(--page);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(37, 87, 214, 0.22);
+}
+
+.app-container {
+  max-width: 960px;
+  margin: 40px auto 72px;
+  padding: 0 20px;
+}
+
+/* =========================================================
+   Entrada da página: uma única sequência orquestrada
+   ========================================================= */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.app-header,
+.form-panel,
+.table-panel {
+  animation: rise 0.55s var(--ease) both;
+}
+
+.form-panel {
+  animation-delay: 0.07s;
+}
+
+.table-panel {
+  animation-delay: 0.14s;
+}
+
+/* =========================================================
+   Cabeçalho
+   ========================================================= */
+.app-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 20px 26px 23px;
+  overflow: hidden;
+  background: var(--navy);
+  border-radius: var(--r-lg);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 14px 30px -16px rgba(15, 30, 61, 0.6);
+}
+
+/* filete bicolor: assinatura do painel */
+.app-header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0 50%, var(--money) 50% 100%);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  display: flex;
+  padding: 10px;
+  border-radius: var(--r-sm);
+  background: var(--navy-2);
+  color: #9dbcff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform 0.35s var(--ease), color 0.25s ease;
+}
+
+.header-brand:hover .brand-icon {
+  transform: rotate(-8deg) scale(1.06);
+  color: #fff;
+}
+
+.header-brand h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: #b7c4dc;
+}
+
+.user-greeting::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3ddc84;
+  box-shadow: 0 0 0 3px rgba(61, 220, 132, 0.22);
+}
+
+.user-greeting strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* =========================================================
+   Painéis
+   ========================================================= */
+.panel {
+  margin-bottom: 24px;
+  padding: 28px;
+  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow: 0 0 0 1px var(--line), 0 1px 2px rgba(17, 28, 51, 0.04), 0 10px 26px -18px rgba(17, 28, 51, 0.22);
+  transition: box-shadow 0.3s var(--ease), background-color 0.3s var(--ease);
+}
+
+/* modo edição: o painel muda de cor sozinho quando o botão Cancelar aparece */
+.form-panel:has(.action-btn--cancel) {
+  background: #fffdf6;
+  box-shadow: 0 0 0 1px var(--amber-line), 0 0 0 5px rgba(224, 161, 0, 0.12),
+    0 10px 26px -18px rgba(122, 75, 0, 0.35);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.panel-header h3::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--accent);
+  transition: background-color 0.3s ease;
+}
+
+.form-panel:has(.action-btn--cancel) .panel-header h3::before {
+  background: var(--amber);
+}
+
+/* =========================================================
+   Formulário
+   ========================================================= */
+.form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 7px;
+  min-width: 200px;
+}
+
+.field label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.field:focus-within label {
+  color: var(--accent);
+}
+
+.field:has(.field-input.ng-invalid.ng-touched) label {
+  color: var(--danger);
+}
+
+.field-input {
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field-input::placeholder {
+  color: #9aa5b8;
+}
+
+.field-input:hover {
+  border-color: #98a3b7;
+  background: #fff;
+}
+
+.field-input:focus {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: var(--ring);
+}
+
+.field-input.ng-invalid.ng-touched {
+  border-color: var(--danger);
+  background: #fff8f8;
+}
+
+.field-input.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 4px rgba(217, 45, 58, 0.16);
+}
+
+.field-input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 100px #fff inset;
+  -webkit-text-fill-color: var(--ink);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* =========================================================
+   Botões
+   ========================================================= */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 24px;
+  border: none;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.18s var(--ease), box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.action-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.action-btn:focus-visible,
+.row-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.action-btn--save {
+  background: var(--money);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 1px 2px rgba(10, 95, 45, 0.45),
+    0 6px 14px -8px rgba(14, 122, 59, 0.7);
+}
+
+.action-btn--save:hover {
+  background: var(--money-strong);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 1px 2px rgba(10, 95, 45, 0.45),
+    0 12px 22px -10px rgba(14, 122, 59, 0.75);
+}
+
+.action-btn--save:active {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 2px rgba(10, 95, 45, 0.4);
+}
+
+.action-btn--save:focus-visible {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 0 4px rgba(14, 122, 59, 0.28);
+}
+
+.action-btn--cancel {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+.action-btn--cancel:hover {
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px #98a3b7;
+  transform: translateY(-1px);
+}
+
+.action-btn--logout {
+  height: 40px;
+  padding: 0 18px;
+  background: transparent;
+  color: #dbe5f7;
+  font-size: 0.86rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.action-btn--logout:hover {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px #f87171;
+}
+
+.action-btn--logout:active {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.action-btn--logout:focus-visible {
+  box-shadow: inset 0 0 0 1px #f87171, 0 0 0 4px rgba(248, 113, 113, 0.3);
+}
+
+/* =========================================================
+   Tabela
+   ========================================================= */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: var(--r-sm);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.table-wrap::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 8px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  text-align: left;
+}
+
+.custom-table th {
+  padding: 14px 20px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.custom-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.custom-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.custom-table tbody tr {
+  animation: row-in 0.35s var(--ease) both;
+  transition: background-color 0.18s ease;
+}
+
+.custom-table tbody tr:nth-child(2) { animation-delay: 0.04s; }
+.custom-table tbody tr:nth-child(3) { animation-delay: 0.08s; }
+.custom-table tbody tr:nth-child(4) { animation-delay: 0.12s; }
+.custom-table tbody tr:nth-child(5) { animation-delay: 0.16s; }
+.custom-table tbody tr:nth-child(6) { animation-delay: 0.2s; }
+.custom-table tbody tr:nth-child(n + 7) { animation-delay: 0.24s; }
+
+/* hover de linha: barra de acento + fundo + número acende */
+.custom-table tbody td:first-child {
+  box-shadow: inset 3px 0 0 transparent;
+  transition: box-shadow 0.2s var(--ease);
+}
+
+.custom-table tbody tr:hover,
+.custom-table tbody tr:focus-within {
+  background: var(--row-hover);
+}
+
+.custom-table tbody tr:hover td:first-child,
+.custom-table tbody tr:focus-within td:first-child {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.col-id {
+  width: 60px;
+  color: var(--faint);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+.custom-table tbody tr:hover .col-id {
+  color: var(--accent);
+}
+
+.cell-name {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.price-tag {
+  color: var(--money);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.custom-table tbody tr:hover .price-tag {
+  color: var(--money-strong);
+}
+
+.col-actions {
+  width: 200px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   Botões da linha
+   ========================================================= */
+.row-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  margin-left: 6px;
+  padding: 0 13px;
+  border: none;
+  border-radius: var(--r-xs);
+  background: #fff;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: transform 0.18s var(--ease), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.row-btn svg {
+  transition: transform 0.3s var(--ease);
+}
+
+.row-btn:active {
+  transform: scale(0.95);
+}
+
+.row-btn--edit:hover {
+  background: var(--amber-tint);
+  color: var(--amber-ink);
+  box-shadow: inset 0 0 0 1px var(--amber-line);
+  transform: translateY(-1px);
+}
+
+.row-btn--edit:hover svg {
+  transform: rotate(-14deg) scale(1.1);
+}
+
+.row-btn--delete:hover {
+  background: var(--danger);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px var(--danger), 0 8px 16px -8px rgba(217, 45, 58, 0.75);
+  transform: translateY(-1px);
+}
+
+.row-btn--delete:hover svg {
+  transform: translateY(-1px) scale(1.12);
+}
+
+/* =========================================================
+   Utilitários
+   ========================================================= */
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: var(--accent-tint);
+  color: var(--accent-strong);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.count-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.empty-state {
+  padding: 48px 20px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--muted);
+  text-align: center;
+}
+
+.empty-icon {
+  display: inline-flex;
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 50%;
+  background: var(--accent-tint);
+  color: var(--accent);
+  box-shadow: 0 0 0 8px rgba(37, 87, 214, 0.07);
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.empty-state .empty-title {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.empty-state .empty-hint {
+  margin-top: 4px;
+  font-size: 0.88rem;
+}
+
+/* =========================================================
+   Responsivo: a tabela vira lista de cartões no celular
+   ========================================================= */
+@media (max-width: 640px) {
+  .app-container {
+    margin-top: 20px;
+    padding: 0 14px;
+  }
+
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 20px 22px;
+  }
+
+  .user-profile {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .form-actions {
+    width: 100%;
+  }
+
+  .form-actions .action-btn {
+    flex: 1;
+  }
+
+  .custom-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .custom-table,
+  .custom-table tbody {
+    display: block;
+  }
+
+  .custom-table tbody tr {
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    grid-template-areas:
+      "id name actions"
+      "id price actions";
+    column-gap: 12px;
+    row-gap: 2px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .custom-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .custom-table td,
+  .custom-table tbody tr:last-child td {
+    display: block;
+    padding: 0;
+    border: none;
+  }
+
+  .col-id {
+    grid-area: id;
+    align-self: center;
+    width: auto;
+  }
+
+  .cell-name {
+    grid-area: name;
+  }
+
+  .price-tag {
+    grid-area: price;
+  }
+
+  .col-actions {
+    grid-area: actions;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-self: center;
+    width: auto;
+  }
+
+  .row-btn {
+    justify-content: center;
+    margin: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

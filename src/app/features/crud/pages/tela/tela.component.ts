@@ -1,21 +1,18 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { ProdutoService, Produto } from './services/produto';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { ProdutoService, Produto } from '../../models/produto';
 
 import Keycloak from 'keycloak-js';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [FormsModule, CommonModule, RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  selector: 'app-tela',
+  standalone: false,
+  templateUrl: './tela.component.html',
+  styleUrl: './tela.component.css'
 })
-export class App implements OnInit {
+export class TelaComponent implements OnInit {
   private produtoService = inject(ProdutoService);
   private keycloak = inject(Keycloak) as unknown as Keycloak;
+  private cdr = inject(ChangeDetectorRef);
 
   nome: string = '';
   preco: number | null = null;
@@ -24,20 +21,33 @@ export class App implements OnInit {
   usuarioNome: string = '';
 
   async ngOnInit(): Promise<void> {
-    try {
-      if (this.keycloak.authenticated) {
-        const profile = await this.keycloak.loadUserProfile();
-        this.usuarioNome = profile.firstName || profile.username || 'Usuário';
-        this.carregarProdutos();
-      }
-    } catch (error) {
-      console.error('Erro ao carregar perfil do Keycloak:', error);
+  try {
+    // Inicializa o Keycloak e força o redirecionamento se não estiver autenticado
+    const authenticated = await this.keycloak.init({
+      onLoad: 'login-required',
+      checkLoginIframe: false
+    });
+
+    if (authenticated) {
+      const profile = await this.keycloak.loadUserProfile();
+      this.usuarioNome = profile.firstName || profile.username || 'Usuário';
+      this.carregarProdutos();
     }
+  } catch (error) {
+    console.error('Erro ao inicializar Keycloak:', error);
+    // Tenta carregar os produtos mesmo se o Keycloak falhar
+    this.carregarProdutos();
+  } finally {
+    // Força a atualização da interface no Web Component logo após resolver a promessa
+    this.cdr.detectChanges();
   }
+}
 
   carregarProdutos(): void {
     this.produtoService.getProdutos().subscribe({
-      next: (dados: Produto[]) => this.produtos = dados,
+      next: (dados: Produto[]) => { this.produtos = dados,
+    this.cdr.detectChanges();
+      },
       error: (err: any) => console.error('Erro ao buscar produtos:', err)
     });
   }
@@ -64,6 +74,7 @@ export class App implements OnInit {
           this.produtos = [...this.produtos];
         }
         this.limparFormulario();
+        this.cdr.detectChanges();
       },
       error: (err: any) => console.error('Erro ao atualizar produto:', err)
     });
@@ -85,6 +96,7 @@ export class App implements OnInit {
         // Adiciona à lista garantindo ID único
         this.produtos = [...this.produtos, novoProduto];
         this.limparFormulario();
+        this.cdr.detectChanges();
       },
       error: (err: any) => console.error('Erro ao criar produto:', err)
     });
@@ -95,6 +107,7 @@ export class App implements OnInit {
     this.nome = produto.nome;
     this.preco = produto.preco;
     this.idEditando = produto.id ?? 1;
+    this.cdr.detectChanges();
   }
 
   // 3. EXCLUSÃO: Filtra o array localmente sem rechamar this.carregarProdutos()
@@ -103,6 +116,7 @@ export class App implements OnInit {
     next: () => {
       // Usar Number() garante que a comparação funcione mesmo se o ID vier como string do template
       this.produtos = this.produtos.filter(p => Number(p.id) !== Number(id));
+      this.cdr.detectChanges();
     },
     error: (err: any) => console.error('Erro ao deletar produto:', err)
   });
@@ -118,5 +132,6 @@ export class App implements OnInit {
     this.nome = '';
     this.preco = null;
     this.idEditando = null;
+    this.cdr.detectChanges();
   }
 }
